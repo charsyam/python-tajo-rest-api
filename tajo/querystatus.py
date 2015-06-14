@@ -8,19 +8,18 @@ except ImportError:
     import json
 
 class TajoQueryStatus(TajoObject):
-    def __init__(self, objs):
-        self.objs = objs
-        self.state = objs["queryState"]
+    def __init__(self, state):
+        self.state = state
 
     def __repr__(self):
-        return "QueryStatus"
+        return self.state
 
     @staticmethod
     def create(headers, content):
         if PY3:
             content = content.decode('utf-8')
 
-        return TajoQueryStatus(json.loads(content))
+        return TajoQueryStatus(json.loads(content)["queryState"])
 
 
 class TajoQueryStatusRequest(TajoRequest):

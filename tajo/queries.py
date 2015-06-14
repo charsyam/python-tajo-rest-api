@@ -30,7 +30,7 @@ class TajoQueriesRequest(TajoRequest):
         self.database_name = database_name
 
     def uri(self):
-        return "databases/%s/queries"%(self.database_name)
+        return "queries/%s"%(self.database_name)
 
     def headers(self):
         return None

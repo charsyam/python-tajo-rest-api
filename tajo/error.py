@@ -51,6 +51,15 @@ class NotFoundError(TajoClientError):
     def __repr__(self):
         return ("<NotFoundError in " + repr(self.value) + ">")
 
+class NullQueryIdError(TajoClientError):
+    """NotFound Error exceptions"""
+
+    def __init__(self):
+        super(NullQueryIdError, self).__init__()
+
+    def __repr__(self):
+        return ("<NullQueryIdError>")
+
 class InternalError(TajoClientError):
     """NotFound Error exceptions"""
 

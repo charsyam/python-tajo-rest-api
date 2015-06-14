@@ -1,5 +1,6 @@
 from tajo.session import TajoSessionRequest, TajoSession
 from tajo.query import TajoQueryRequest, TajoQuery
+from tajo.queryid import QueryId
 from tajo.queries import TajoQueriesRequest, TajoQueries
 from tajo.querystatus import TajoQueryStatusRequest, TajoQueryStatus
 from tajo.resultsetinfo import TajoResultSetInfoRequest, TajoResultSetInfo
@@ -8,6 +9,7 @@ from tajo.fetchresultset import TajoFetchResultSet
 from tajo.connection import TajoConnection
 from tajo.cluster import TajoCluster, TajoClusterRequest
 from tajo.querystate import QueryState
+from tajo.error import *
 
 import time
 
@@ -37,18 +39,37 @@ class TajoClient(object):
         self.conn.add_header("X-Tajo-Session", str(self.session))
 
     def execute_query(self, query):
-        req = TajoQueryRequest(query, self.database)
+        req = TajoQueryRequest(query)
         return req.request(self.conn)
+
+    def is_null_query_id(self, query_id):
+        ret = False
+
+        if query_id.query_id == QueryId.NULL_QUERY_ID:
+            ret = True
+
+        return ret
 
     def queries(self):
         req = TajoQueriesRequest(self.database)
         return req.request(self.conn)
 
     def query_status(self, query_id):
+        if query_id.completed:
+            return TajoQueryStatus(query_id.status)
+        elif self.is_null_query_id(query_id):
+            raise NullQueryIdError()
+
         req = TajoQueryStatusRequest(query_id, self.base)
         return req.request(self.conn)
 
     def query_resultset_info(self, query_id):
+        if self.is_null_query_id(query_id):
+            raise NullQueryIdError()
+
+        if query_id.completed:
+            return TajoResultSetInfo(None, query_id.schema)
+
         req = TajoResultSetInfoRequest(query_id, self.base)
         return req.request(self.conn)
 

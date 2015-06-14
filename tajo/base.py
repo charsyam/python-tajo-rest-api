@@ -1,5 +1,5 @@
-from tajo.error import NotImplementedMethodError, InvalidStatusError, InvalidRequestError, InternalError
-from tajo.py3 import httplib
+from tajo.error import *
+from tajo.py3 import httplib, PY3
 
 try:
     import simplejson as json
@@ -47,6 +47,7 @@ class TajoRequest(object):
             if PY3:
                 contents = contents.decode('utf-8')
 
+            print(contents)
             c = json.loads(contents)
             if 'message' in c:
                 msg = "%s %s"%(status, c["message"])
@@ -54,10 +55,11 @@ class TajoRequest(object):
             if headers["status"][0] == '4':
                 raise InvalidRequestError(msg)
             if headers["status"][0] == '5':
-                raise InternalErrorError(msg)
+                raise InternalError(msg)
 
     def request(self, conn):
         headers, contents = conn._request(self.method(), self.uri(), self.params())
+        print(headers, contents)
         self.check_status(headers, contents)
         return self.object_cls.create(headers, contents)
 

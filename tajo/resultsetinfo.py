@@ -8,18 +8,23 @@ except ImportError:
     import json
 
 class TajoResultSetInfo(TajoObject):
-    def __init__(self, objs):
-        self.objs = objs
-        self.link = self.objs["resultset"]["link"]
+    def __init__(self, objs, schema=None):
+        if objs is not None:
+            self.objs = objs
+            self.result_link = self.objs["resultset"]["link"]
+
+        if objs is None and schema is not None:
+            self.objs = { "schema": schema }
+            self.result_link = ""
 
     def schema(self):
         return self.objs["schema"]
 
     def link(self):
-        return self.link;
+        return self.result_link
 
     def __repr__(self):
-        return self.link
+        return self.result_link
 
     @staticmethod
     def create(headers, content):

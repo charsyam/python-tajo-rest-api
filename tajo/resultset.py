@@ -45,11 +45,19 @@ class TajoMemoryResultSet(ResultSetBase):
 
     @staticmethod
     def create(resultset_info, headers, content):
-        offset = int(headers["x-tajo-offset"])
-        count = int(headers["x-tajo-count"])
+        offset = 0
+        count = 0
         eos = False
-        if headers["x-tajo-eos"] == "true":
-            eos = True
+
+        if "x-tajo-offset" in headers:
+            offset = int(headers["x-tajo-offset"])
+
+        if "x-tajo-count" in headers:
+            count = int(headers["x-tajo-count"])
+
+        if "x-tajo-eos" in headers:
+            if headers["x-tajo-eos"] == "true":
+                eos = True
 
         if offset < 0:
             offset = 0
