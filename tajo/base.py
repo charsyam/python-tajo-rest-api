@@ -47,7 +47,6 @@ class TajoRequest(object):
             if PY3:
                 contents = contents.decode('utf-8')
 
-            print(contents)
             c = json.loads(contents)
             if 'message' in c:
                 msg = "%s %s"%(status, c["message"])
@@ -59,7 +58,6 @@ class TajoRequest(object):
 
     def request(self, conn):
         headers, contents = conn._request(self.method(), self.uri(), self.params())
-        print(headers, contents)
         self.check_status(headers, contents)
         return self.object_cls.create(headers, contents)
 
@@ -67,3 +65,7 @@ class TajoRequest(object):
 class TajoPostRequest(TajoRequest):
     def method(self):
         return "POST"
+
+class TajoDeleteRequest(TajoRequest):
+    def method(self):
+        return "DELETE"

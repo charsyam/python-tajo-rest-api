@@ -9,6 +9,9 @@ from tajo.fetchresultset import TajoFetchResultSet
 from tajo.connection import TajoConnection
 from tajo.cluster import TajoCluster, TajoClusterRequest
 from tajo.querystate import QueryState
+from tajo.database import TajoDatabasesRequest, TajoDatabases, TajoDatabaseRequest, TajoDatabase
+from tajo.database import TajoCreateDatabaseRequest, TajoDeleteDatabaseRequest
+from tajo.functions import TajoFunctionsRequest
 from tajo.error import *
 
 import time
@@ -113,4 +116,24 @@ class TajoClient(object):
 
     def cluster_info(self):
         req = TajoClusterRequest()
+        return req.request(self.conn)
+
+    def databases(self):
+        req = TajoDatabasesRequest()
+        return req.request(self.conn)
+
+    def database_info(self, database_name):
+        req = TajoDatabaseRequest(database_name)
+        return req.request(self.conn)
+
+    def create_database(self, database_name):
+        req = TajoCreateDatabaseRequest(database_name)
+        return req.request(self.conn)
+
+    def delete_database(self, database_name):
+        req = TajoDeleteDatabaseRequest(database_name)
+        return req.request(self.conn)
+
+    def functions(self):
+        req = TajoFunctionsRequest()
         return req.request(self.conn)
