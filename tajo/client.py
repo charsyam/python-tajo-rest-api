@@ -11,6 +11,7 @@ from tajo.cluster import TajoCluster, TajoClusterRequest
 from tajo.querystate import QueryState
 from tajo.database import TajoDatabasesRequest, TajoDatabases, TajoDatabaseRequest, TajoDatabase
 from tajo.database import TajoCreateDatabaseRequest, TajoDeleteDatabaseRequest
+from tajo.tables import TajoTablesRequest, TajoTableRequest
 from tajo.functions import TajoFunctionsRequest
 from tajo.error import *
 
@@ -128,10 +129,19 @@ class TajoClient(object):
 
     def create_database(self, database_name):
         req = TajoCreateDatabaseRequest(database_name)
+        import pdb; pdb.set_trace()
         return req.request(self.conn)
 
     def delete_database(self, database_name):
         req = TajoDeleteDatabaseRequest(database_name)
+        return req.request(self.conn)
+
+    def tables(self, database_name):
+        req = TajoTablesRequest(database_name)
+        return req.request(self.conn)
+
+    def table(self, database_name, table_name):
+        req = TajoTableRequest(database_name, table_name)
         return req.request(self.conn)
 
     def functions(self):

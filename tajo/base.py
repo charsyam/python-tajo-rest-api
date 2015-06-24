@@ -59,6 +59,7 @@ class TajoRequest(object):
     def request(self, conn):
         headers, contents = conn._request(self.method(), self.uri(), self.params())
         self.check_status(headers, contents)
+        print contents
         return self.object_cls.create(headers, contents)
 
 
