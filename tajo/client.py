@@ -90,6 +90,9 @@ class TajoClient(object):
 
     def execute_query_wait_result(self, query):
         query_id = self.execute_query(query)
+        if self.is_null_query_id(query_id):
+            return self.create_nullresultset(query_id)
+
         status = self.query_status(query_id)
         while self.is_query_complete(status.state) == False:
             time.sleep(0.1)
@@ -129,7 +132,6 @@ class TajoClient(object):
 
     def create_database(self, database_name):
         req = TajoCreateDatabaseRequest(database_name)
-        import pdb; pdb.set_trace()
         return req.request(self.conn)
 
     def delete_database(self, database_name):

@@ -47,6 +47,7 @@ class TajoRequest(object):
             if PY3:
                 contents = contents.decode('utf-8')
 
+            import pdb; pdb.set_trace()
             c = json.loads(contents)
             if 'message' in c:
                 msg = "%s %s"%(status, c["message"])
@@ -59,7 +60,6 @@ class TajoRequest(object):
     def request(self, conn):
         headers, contents = conn._request(self.method(), self.uri(), self.params())
         self.check_status(headers, contents)
-        print contents
         return self.object_cls.create(headers, contents)
 
 

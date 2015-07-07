@@ -1,6 +1,7 @@
 from tajo.error import InvalidStatusError
 from tajo.base import TajoPostRequest, TajoObject
 from tajo.querystate import QueryState
+from tajo.queryid import QueryId
 from tajo.py3 import httplib, PY3
 
 try:
@@ -10,16 +11,18 @@ except ImportError:
 
 class TajoQuery(TajoObject):
     def __init__(self, headers, contents=None):
-        self.url = headers["location"]
-        self.query_id = self.get_parse_query_id(self.url)
-        self.completed = False
-        if contents is not None:
-            self.completed = True
-            self.status = QueryStatus.QUERY_SUCCECCED
-            if PY3:
-                contents = contents.decode('utf-8')
+        if PY3:
+            contents = contents.decode('utf-8')
 
-            self.objs = json.loads(contents)
+        self.completed = False
+        self.objs = json.loads(contents)
+        if "uri" in self.objs:
+            self.url = self.objs["uri"]
+            self.query_id = self.get_parse_query_id(self.url)
+        else:
+            self.query_id = QueryId.NULL_QUERY_ID
+            self.completed = True
+            self.status = QueryState.QUERY_SUCCEEDED
 
     def get_query_id(self):
         return self.query_id
@@ -29,14 +32,11 @@ class TajoQuery(TajoObject):
         return parts[-1]
 
     def __repr__(self):
-        return str(self.url)
+        return str(self.uri)
 
     @staticmethod
-    def create(headers, content):
-        if int(headers["status"]) == httplib.CREATED:
-            return TajoQuery(headers)
-        else:
-            return TajoQuery(headers, content)
+    def create(headers, contents):
+        return TajoQuery(headers, contents)
 
 
 class TajoQueryRequest(TajoPostRequest):
