@@ -1,7 +1,7 @@
 from tajo.session import TajoSessionRequest, TajoSession
 from tajo.query import TajoQueryRequest, TajoQuery
 from tajo.queryid import QueryId
-from tajo.queries import TajoQueriesRequest, TajoQueries
+from tajo.queries import TajoQueriesRequest
 from tajo.querystatus import TajoQueryStatusRequest, TajoQueryStatus
 from tajo.resultsetinfo import TajoResultSetInfoRequest, TajoResultSetInfo
 from tajo.resultset import TajoMemoryResultSetRequest, TajoMemoryResultSet

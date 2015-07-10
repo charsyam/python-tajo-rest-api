@@ -7,30 +7,34 @@ try:
 except ImportError:
     import json
 
-class TajoQueries(TajoObject):
+class TajoQueryInfo(TajoObject):
     def __init__(self, objs):
         self.objs = objs
 
     def __repr__(self):
-        return "Queries"
+        return "(%s:%s)"%(self.objs["queryIdStr"], self.objs["sql"])
 
     @staticmethod
     def create(headers, content):
         if PY3:
             content = content.decode('utf-8')
 
-        return TajoQueries(json.loads(content))
+        queries = []
+        objs = json.loads(content)["queries"]
+        for obj in objs:
+            queries.append(TajoQueryInfo(obj))
 
+        return queries
 
 class TajoQueriesRequest(TajoRequest):
-    object_cls = TajoQueries
+    object_cls = TajoQueryInfo
     ok_status = [httplib.OK]
 
     def __init__(self, database_name):
         self.database_name = database_name
 
     def uri(self):
-        return "queries/%s"%(self.database_name)
+        return "queries"
 
     def headers(self):
         return None

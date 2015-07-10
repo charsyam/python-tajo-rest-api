@@ -1,6 +1,5 @@
 from tajo.client import TajoClient
 
-import pdb; pdb.set_trace()
 client = TajoClient("http://127.0.0.1:26880/rest", username='charsyam')
 client.execute_query_wait_result('create table "Test2" (col1 int)')
 client.execute_query_wait_result('insert into "Test2" select 1')
@@ -15,3 +14,4 @@ while True:
 
     print(t)
 
+client.execute_query_wait_result('drop table "Test2" purge')
