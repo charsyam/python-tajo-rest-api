@@ -1,0 +1,16 @@
+Metadata-Version: 1.1
+Name: tajo-rest-client
+Version: 0.0.1
+Summary: a Python implementation of Tajo Rest Client
+Home-page: http://github.com/charsyam/python-tajo-rest-client/
+Author: DaeMyung Kang
+Author-email: charsyam@gmail.com
+License: UNKNOWN
+Description: python tajo rest client
+        
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development :: Libraries :: Python Modules

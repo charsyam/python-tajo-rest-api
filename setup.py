@@ -3,17 +3,17 @@
 from setuptools import setup, find_packages
 import sys
 
-DESCRIPTION = """python tajo client
+DESCRIPTION = """python tajo rest client
 """
 
-install_requires = ["protobuf==2.5.0"]
+install_requires = ["httplib2"]
 
 setup(
-    name="tajo-client",
-    version="0.0.6",
-    description="a Python implementation of Tajo Client",
+    name="tajo-rest-client",
+    version="0.0.1",
+    description="a Python implementation of Tajo Rest Client",
     long_description=DESCRIPTION,
-    url='http://github.com/charsyam/python-tajo-client/',
+    url='http://github.com/charsyam/python-tajo-rest-client/',
     author='DaeMyung Kang',
     author_email='charsyam@gmail.com',
     classifiers=[
@@ -22,9 +22,8 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Topic :: Software Development :: Libraries :: Python Modules'],
-    packages=find_packages('src', exclude=[
-            '*.*.tests', '*.*.examples', '*.*.examples.*']),
+    packages=find_packages('src'),
     package_dir={'': 'src'},
     install_requires=install_requires,
-    test_suite='tajo.tests',
+    test_suite='',
 )
